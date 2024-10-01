@@ -1,0 +1,41 @@
+version: 2.1
+
+# Définir les jobs que nous voulons exécuter pour ce projet
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk  # Utilisation de Java 8, peut être changé à une version supérieure
+    steps:
+      - checkout  # Récupérer le code source
+      
+      # Installation de Maven si nécessaire (si Maven n'est pas inclus dans l'image Docker)
+      - run:
+          name: Installer Maven
+          command: apt-get update && apt-get install -y maven
+      
+      # Compilation du projet
+      - run:
+          name: Compiler le projet
+          command: mvn compile
+      
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk  # Utilisation de Java 8
+    steps:
+      - checkout  # Récupérer le code source
+      
+      # Exécuter les tests unitaires avec Maven
+      - run:
+          name: Exécuter les tests unitaires
+          command: mvn test
+
+# Orchestration de la séquence des jobs
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          filters:
+            branches:
+              only: master  # Exécuter seulement sur la branche master
