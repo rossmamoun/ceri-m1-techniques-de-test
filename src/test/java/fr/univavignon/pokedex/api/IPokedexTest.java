@@ -99,18 +99,28 @@ public class IPokedexTest {
 
     @Test
     public void testGetPokemonsWithOrder() {
-        // Setup a comparator
-        Comparator<Pokemon> comparator = Comparator.comparing(Pokemon::getCp);
+        // Test sorting by CP
+        Comparator<Pokemon> cpComparator = PokemonComparators.CP;
+        when(pokedex.getPokemons(cpComparator)).thenReturn(Arrays.asList(pokemon2, pokemon1));
 
-        // Setup mock behavior
-        when(pokedex.getPokemons(comparator)).thenReturn(Arrays.asList(pokemon2, pokemon1));
+        // Get sorted list of Pokemons by CP
+        List<Pokemon> sortedByCP = pokedex.getPokemons(cpComparator);
 
-        // Get sorted list of Pokemons
-        List<Pokemon> sortedPokemons = pokedex.getPokemons(comparator);
+        // Verify sorted order by CP
+        assertEquals(2, sortedByCP.size(), "The sorted list of Pokemons should contain two Pokémon.");
+        assertEquals(pokemon2, sortedByCP.get(0), "Aquali should come first by CP.");
+        assertEquals(pokemon1, sortedByCP.get(1), "Bulbizarre should come second by CP.");
 
-        // Verify
-        assertEquals(2, sortedPokemons.size(), "The sorted list of Pokemons should contain two Pokémon.");
-        assertEquals(pokemon2, sortedPokemons.get(0), "The first Pokemon should be the one with the higher CP.");
-        assertEquals(pokemon1, sortedPokemons.get(1), "The second Pokemon should be the one with the lower CP.");
+        // Test sorting by name
+        Comparator<Pokemon> nameComparator = PokemonComparators.NAME;
+        when(pokedex.getPokemons(nameComparator)).thenReturn(Arrays.asList(pokemon1, pokemon2));
+
+        // Get sorted list of Pokemons by name
+        List<Pokemon> sortedByName = pokedex.getPokemons(nameComparator);
+
+        // Verify sorted order by name
+        assertEquals(2, sortedByName.size(), "The sorted list of Pokemons should contain two Pokémon.");
+        assertEquals(pokemon1, sortedByName.get(0), "Bulbizarre should come first by name.");
+        assertEquals(pokemon2, sortedByName.get(1), "Aquali should come second by name.");
     }
 }
