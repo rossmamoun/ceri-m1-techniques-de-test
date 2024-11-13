@@ -1,8 +1,7 @@
 package fr.univavignon.pokedex.api;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,27 +15,22 @@ public class IPokedexFactoryTest {
     @Mock
     private IPokemonFactory pokemonFactory;
 
-    @Mock
     private IPokedexFactory pokedexFactory;
-
-    @Mock
-    private IPokedex pokedex;  // Mocking the resulting IPokedex instance
 
     @BeforeEach
     public void setup() {
-        // Initialize mocks
         MockitoAnnotations.openMocks(this);
+        // Instantiate the real PokedexFactoryImpl
+        pokedexFactory = new PokedexFactoryImpl();
     }
 
     @Test
     public void testCreatePokedex() {
-        // Stub the createPokedex() method to return a mock IPokedex instance
-        when(pokedexFactory.createPokedex(metadataProvider, pokemonFactory)).thenReturn(pokedex);
-
         // Call the method under test
         IPokedex result = pokedexFactory.createPokedex(metadataProvider, pokemonFactory);
 
-        // Verify that the result is not null (i.e., a valid IPokedex is returned)
+        // Assert that the result is not null and is an instance of PokedexImpl
         assertNotNull(result, "The created Pokedex should not be null.");
+        assertTrue(result instanceof PokedexImpl, "The created Pokedex should be an instance of PokedexImpl.");
     }
 }
