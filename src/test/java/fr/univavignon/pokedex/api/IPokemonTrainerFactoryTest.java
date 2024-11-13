@@ -15,6 +15,12 @@ public class IPokemonTrainerFactoryTest {
 
     // Mock dependencies
     @Mock
+    private IPokemonMetadataProvider metadataProvider;
+
+    @Mock
+    private IPokemonFactory pokemonFactory;
+
+    @Mock
     private IPokedexFactory pokedexFactory;
 
     @Mock
@@ -24,11 +30,11 @@ public class IPokemonTrainerFactoryTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Initialize the actual trainer factory (assuming concrete implementation exists)
-        pokemonTrainerFactory = mock(IPokemonTrainerFactory.class); // Replace this with actual implementation if available
+        // Instantiate the real PokemonTrainerFactoryImpl
+        pokemonTrainerFactory = new PokemonTrainerFactoryImpl(metadataProvider, pokemonFactory);
 
         // Mock the behavior of pokedexFactory
-        when(pokedexFactory.createPokedex(any(), any())).thenReturn(pokedex);
+        when(pokedexFactory.createPokedex(metadataProvider, pokemonFactory)).thenReturn(pokedex);
     }
 
     @Test
@@ -37,19 +43,6 @@ public class IPokemonTrainerFactoryTest {
         String trainerName = "Ash";
         Team team = Team.MYSTIC;
         PokemonTrainer expectedTrainer = new PokemonTrainer(trainerName, team, pokedex);
-
-        // Mock behavior of createTrainer
-        when(pokemonTrainerFactory.createTrainer(trainerName, team, pokedexFactory)).thenAnswer(invocation -> {
-            String name = invocation.getArgument(0);
-            Team trainerTeam = invocation.getArgument(1);
-            IPokedexFactory factory = invocation.getArgument(2);
-
-            // Call pokedexFactory to create the pokedex
-            IPokedex pokedex = factory.createPokedex(null, null);
-
-            // Return a new PokemonTrainer with the created pokedex
-            return new PokemonTrainer(name, trainerTeam, pokedex);
-        });
 
         // Act
         PokemonTrainer trainer = pokemonTrainerFactory.createTrainer(trainerName, team, pokedexFactory);
@@ -60,6 +53,6 @@ public class IPokemonTrainerFactoryTest {
         assertEquals(pokedex, trainer.getPokedex());
 
         // Verify interactions with mocks
-        verify(pokedexFactory).createPokedex(any(), any());
+        verify(pokedexFactory).createPokedex(metadataProvider, pokemonFactory);
     }
 }
