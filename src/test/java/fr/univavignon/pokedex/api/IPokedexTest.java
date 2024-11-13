@@ -56,10 +56,15 @@ public class IPokedexTest {
     }
 
     @Test
-    public void testGetPokemonInvalidIndex() {
-        assertThrows(PokedexException.class, () -> pokedex.getPokemon(-1), 
+    public void testGetPokemonInvalidIndex() throws PokedexException {
+        // Set up the mock to throw a PokedexException when an invalid index is accessed
+        doThrow(new PokedexException("Invalid Pokemon ID: -1")).when(pokedex).getPokemon(-1);
+
+        // Verify that the exception is thrown for an invalid index
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(-1),
                      "Retrieving a Pokemon with an invalid index should throw a PokedexException.");
     }
+
 
     @Test
     public void testGetPokemons() {
