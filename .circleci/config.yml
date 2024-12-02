@@ -14,24 +14,30 @@ jobs:
       - run:
           name: Build with Tests
           command: mvn clean package
-
 		
       # Generate coverage report using JaCoCo
       - run:
           name: Generate Coverage Report
           command: mvn test jacoco:report
-		  
-      #run Checkstyle to analyze code quality  
-	  -run:
-		name: Run Checkstyle
-		command: mvn checkstyle:check
 
       # Upload to Codecov
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml  # This is where JaCoCo stores the coverage report
+  checkstyle:
+    docker:
+	  - image: cimg/openjdk:11.0 #Java environment 
+	steps:
+	  - checkout #checkout the repository
+	  
+	  #run checkstyle to analyze code quality
+      - run:
+          name: Run Checkstyle
+          command: mvn checkstyle:check 
 
 workflows:
   sample:
     jobs:
       - build-and-test  # Running build-and-test job defined above
-#test
+      -checkstyle:
+        requires:
+          - build-and-test #only run checkstyle after build and test complete   
