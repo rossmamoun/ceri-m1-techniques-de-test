@@ -24,7 +24,7 @@ jobs:
           file: target/site/jacoco/jacoco.xml  # This is where JaCoCo stores the coverage report
   checkstyle:
     docker:
-	  - image: cimg/openjdk:11.0 #Java environment 
+      - image: cimg/openjdk:11.0 #Java environment 
 	steps:
 	  - checkout #checkout the repository
 	  
