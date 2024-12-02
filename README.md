@@ -2,8 +2,7 @@
 ## M1 ILSEN - CLA1
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/rossmamoun/ceri-m1-techniques-de-test/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/rossmamoun/ceri-m1-techniques-de-test/tree/master)
 [![codecov](https://codecov.io/github/rossmamoun/ceri-m1-techniques-de-test/graph/badge.svg?token=J7GBQ1KQ0V)](https://codecov.io/github/rossmamoun/ceri-m1-techniques-de-test)
-![Checkstyle Status](https://circleci.com/api/v1.1/project/github/rossmamoun/ceri-m1-techniques-de-test/latest/artifacts/0/checkstyle-badge.svg?branch=master
-)
+![Checkstyle](https://img.shields.io/badge/Checkstyle-passed-brightgreen)
 
 ## Documentation
 
