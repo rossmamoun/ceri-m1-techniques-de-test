@@ -25,10 +25,9 @@ jobs:
   checkstyle:
     docker:
       - image: cimg/openjdk:11.0 #Java environment 
-	steps:
-	  - checkout #checkout the repository
-	  
-	  #run checkstyle to analyze code quality
+    steps:
+      - checkout #checkout the repository
+      #run checkstyle to analyze code quality
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check 
@@ -37,6 +36,6 @@ workflows:
   sample:
     jobs:
       - build-and-test  # Running build-and-test job defined above
-      -checkstyle:
-        requires:
-          - build-and-test #only run checkstyle after build and test complete   
+      - checkstyle:
+          requires:
+            - build-and-test #only run checkstyle after build and test complete   
