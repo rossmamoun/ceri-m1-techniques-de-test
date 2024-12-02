@@ -15,16 +15,15 @@ jobs:
           name: Build with Tests
           command: mvn clean package
 
-		
       # Generate coverage report using JaCoCo
       - run:
           name: Generate Coverage Report
           command: mvn test jacoco:report
-		  
+
       #run Checkstyle to analyze code quality  
-	  -run:
-		name: Run Checkstyle
-		command: mvn checkstyle:check
+      - run:
+          name: Run Checkstyle
+          command: mvn checkstyle:check
 
       # Upload to Codecov
       - codecov/upload:
