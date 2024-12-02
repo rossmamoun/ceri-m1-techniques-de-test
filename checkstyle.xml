@@ -3,8 +3,7 @@
 <module name="Checker">
     <module name="TreeWalker">
         <module name="MagicNumber"/>
-        <module name="IllegalTokenText">
-            <property name="tokens" value="LITERAL_IF, LITERAL_WHILE"/>
+        <module name="LineLength">
         </module>
         <!-- Ajoutez d'autres règles comme vous le souhaitez -->
     </module>
