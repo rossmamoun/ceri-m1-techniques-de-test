@@ -22,15 +22,33 @@ jobs:
       # Upload to Codecov
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml  # This is where JaCoCo stores the coverage report
+
   checkstyle:
     docker:
-      - image: cimg/openjdk:11.0 #Java environment 
+      - image: cimg/openjdk:11.0  # Java environment
     steps:
-      - checkout #checkout the repository
-      #run checkstyle to analyze code quality
+      - checkout  # Checkout the repository
+      # Run Checkstyle to analyze code quality
       - run:
           name: Run Checkstyle
-          command: mvn checkstyle:check 
+          command: |
+            mvn checkstyle:checkstyle
+            if grep -q "<error " target/checkstyle-result.xml; then
+              echo "Checkstyle Failed" > checkstyle-status.txt
+            else
+              echo "Checkstyle Passed" > checkstyle-status.txt
+            fi
+      - run:
+          name: Generate Checkstyle Badge
+          command: |
+            CHECKSTYLE_STATUS=$(cat checkstyle-status.txt)
+            if [ "$CHECKSTYLE_STATUS" = "Checkstyle Passed" ]; then
+              curl -o checkstyle-badge.svg https://img.shields.io/badge/checkstyle-passed-brightgreen.svg
+            else
+              curl -o checkstyle-badge.svg https://img.shields.io/badge/checkstyle-failed-red.svg
+            fi
+      - store_artifacts:
+          path: checkstyle-badge.svg  # Save the badge as an artifact
 
 workflows:
   sample:
@@ -38,4 +56,4 @@ workflows:
       - build-and-test  # Running build-and-test job defined above
       - checkstyle:
           requires:
-            - build-and-test #only run checkstyle after build and test complete   
+            - build-and-test  # Only run Checkstyle after build and test complete
