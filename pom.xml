@@ -63,12 +63,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.11.3</version>
+				<version>1.3</version>
 				<configuration>
 					<connectionType>developerConnection</connectionType>
-					<developerConnection>scm:git:git@github.com:rossmamoun/ceri-m1-techniques-de-test.git</developerConnection>
-					<url>scm:git:git@github.com:rossmamoun/ceri-m1-techniques-de-test.git</url>
-					<tag>HEAD</tag>
+					<developerConnectionUrl>scm:git:git@github.com:rossmamoun/ceri-m1-techniques-de-test.git</developerConnectionUrl>
 				</configuration>
 			</plugin>
 			<!-- Javadoc Plugin -->
