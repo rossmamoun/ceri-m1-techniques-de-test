@@ -71,7 +71,7 @@ jobs:
           name: Deploy Javadoc to gh-pages branch
           command: |
             git checkout -B gh-pages
-            git add target/site/apidocs/**
+            git add -f target/site/apidocs/**
             git commit -m "Deploy Javadoc to gh-pages"
             git push origin gh-pages --force
 
