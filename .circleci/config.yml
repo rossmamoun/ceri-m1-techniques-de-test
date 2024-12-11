@@ -66,7 +66,7 @@ jobs:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:/2v6XWA52PnOi71o4FsNszsTv1X9OI9m9qluah6YpWQ"
+            - "SHA256:EJhniefU80JqdLo3xnFHYDmirraL80hZ8cByL8XC9XM"
       - run:
           name: Deploy Javadoc to gh-pages branch
           command: |
