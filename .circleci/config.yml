@@ -70,8 +70,10 @@ jobs:
       - run:
           name: Deploy Javadoc to gh-pages branch
           command: |
-            mvn scm:checkout scm:update
-            mvn scm:add scm:checkin -Dmessage="Deploy Javadoc to gh-pages" -Dincludes="target/site/apidocs/**"
+            git checkout -B gh-pages
+            git add target/site/apidocs/**
+            git commit -m "Deploy Javadoc to gh-pages"
+            git push origin gh-pages --force
 
 workflows:
   sample:
