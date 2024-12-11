@@ -9,7 +9,6 @@ jobs:
       - image: cimg/openjdk:11.0  # Java environment
     steps:
       - checkout  # Checkout the repository
-
       # Run Maven build and tests, including generating JaCoCo coverage report
       - run:
           name: Build with Tests
@@ -18,7 +17,6 @@ jobs:
       - run:
           name: Generate Coverage Report
           command: mvn test jacoco:report
-
       # Upload to Codecov
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml  # This is where JaCoCo stores the coverage report
@@ -50,6 +48,30 @@ jobs:
       - store_artifacts:
           path: checkstyle-badge.svg  # Save the badge as an artifact
 
+  javadoc:
+    docker:
+      - image: cimg/openjdk:11.0  # Java environment
+    steps:
+      - checkout  # Checkout the repository
+      - run:
+          name: Generate Javadoc
+          command: mvn javadoc:javadoc
+      - run:
+          name: Disable jekyll builds
+          command: touch target/site/apidocs/.nojekyll
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "rossmamoun8@gmail.com""
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:/2v6XWA52PnOi71o4FsNszsTv1X9OI9m9qluah6YpWQ" 
+      - run:
+          name: Deploy Javadoc to gh-pages branch
+          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist target/site/apidocs
+
 workflows:
   sample:
     jobs:
@@ -57,3 +79,6 @@ workflows:
       - checkstyle:
           requires:
             - build-and-test  # Only run Checkstyle after build and test complete
+      - javadoc:
+          requires:
+            - build-and-test  # Only run Javadoc generation after build and test complete
