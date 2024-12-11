@@ -64,12 +64,14 @@ jobs:
           command: |
             git config user.email "rossmamoun8@gmail.com"
             git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:/2v6XWA52PnOi71o4FsNszsTv1X9OI9m9qluah6YpWQ"
       - run:
           name: Deploy Javadoc to gh-pages branch
-          command: >
+          command: |
             mvn scm:checkout scm:update
-            mvn scm:tag scm:deploy
-            mvn deploy -DaltDeploymentRepository=gh-pages::default::file:target/site/apidocs
+            mvn scm:add scm:checkin -Dmessage="Deploy Javadoc to gh-pages" -Dincludes="target/site/apidocs/**"
 
 workflows:
   sample:
