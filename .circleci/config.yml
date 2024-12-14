@@ -58,9 +58,9 @@ jobs:
           command: mvn javadoc:javadoc
       - run:
           name: Copy Javadoc to a Temporary Directory
-		  command: |
-		    mkdir -p javadoc-build
-		    cp -r target/site/apidocs/* javadoc-build/
+          command: |
+            mkdir -p javadoc-build
+            cp -r target/site/apidocs/* javadoc-build/
 
       - run:
           name: Deploy to GitHub Pages
