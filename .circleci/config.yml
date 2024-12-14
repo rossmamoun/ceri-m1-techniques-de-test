@@ -48,40 +48,45 @@ jobs:
       - store_artifacts:
           path: checkstyle-badge.svg  # Save the badge as an artifact
 
-  javadoc:
+  deploy-javadoc:
     docker:
-      - image: cimg/openjdk:11.0  # Java environment
+      - image: cimg/openjdk:11.0
     steps:
-      - checkout  # Checkout the repository
+      - checkout
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Disable jekyll builds
-          command: touch target/site/apidocs/.nojekyll
-      - run:
-          name: Configure Git for Deployment
+          name: Install GitHub Pages CLI
           command: |
-            git config user.email "rossmamoun8@gmail.com"
-            git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "SHA256:EJhniefU80yigggxnFHYDmirraL80hZ8cByL8XC9XM"
+            sudo apt-get update
+            sudo apt-get install -y ruby-full
+            gem install github-pages
       - run:
-          name: Deploy Javadoc to gh-pages branch
+          name: Copy Javadoc to GitHub Pages Directory
           command: |
-            git checkout -B gh-pages
-            git add -f target/site/apidocs/**
-            git commit -m "Deploy Javadoc to gh-pages"
-            git push origin gh-pages --force
+            mkdir -p gh-pages
+            cp -r target/site/apidocs/* gh-pages/
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            git config --global user.email "rossmamoun8@gmail.com"
+            git config --global user.name "rossmamoun"
+            git clone --branch gh-pages https://github.com/rossmamoun/ceri-m1-techniques-de-test.git gh-pages
+            cd gh-pages
+            rm -rf *
+            cp -r ../gh-pages/* .
+            git add .
+            git commit -m "Update Javadoc"
+            git push origin gh-pages
 
 workflows:
   sample:
     jobs:
-      - build-and-test  # Running build-and-test job defined above
+      - build-and-test
       - checkstyle:
           requires:
-            - build-and-test  # Only run Checkstyle after build and test complete
-      - javadoc:
+            - build-and-test
+      - deploy-javadoc:
           requires:
-            - build-and-test  # Only run Javadoc generation after build and test complete
+            - build-and-test
