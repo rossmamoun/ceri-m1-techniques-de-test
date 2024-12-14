@@ -13,6 +13,8 @@ This repository contains an implementation of a Pokémon management system, buil
 - **JaCoCo** for code coverage analysis
 - **CircleCI** for continuous integration and deployment
 
+[Javadoc Documentation](https://rossmamoun.github.io/ceri-m1-techniques-de-test/)
+
 ### Technical Choices
 
 - The project uses an interface-driven design, allowing for better flexibility and easier unit testing.
