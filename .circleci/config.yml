@@ -61,7 +61,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y ruby-full
-            gem install github-pages
+            sudo gem install github-pages
       - run:
           name: Copy Javadoc to GitHub Pages Directory
           command: |
