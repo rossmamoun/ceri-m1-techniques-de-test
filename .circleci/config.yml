@@ -56,43 +56,40 @@ jobs:
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
-          - run:
-		      name: Copy Javadoc to a Temporary Directory
-		      command: |
-		        mkdir -p javadoc-build
-		        cp -r target/site/apidocs/* javadoc-build/
+      - run:
+		  name: Copy Javadoc to a Temporary Directory
+		  command: |
+		    mkdir -p javadoc-build
+		    cp -r target/site/apidocs/* javadoc-build/
 
-          - run:
-              name: Deploy to GitHub Pages
-              command: |
-                git config --global user.email "rossmamoun8@gmail.com"
-                git config --global user.name "rossmamoun"
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            git config --global user.email "rossmamoun8@gmail.com"
+            git config --global user.name "rossmamoun"
 
-                git clone https://github.com/rossmamoun/ceri-m1-techniques-de-test.git temp-repo
-                cd temp-repo
+            git clone https://github.com/rossmamoun/ceri-m1-techniques-de-test.git temp-repo
+            cd temp-repo
 
-                if ! git ls-remote --exit-code origin gh-pages; then
-                  git checkout --orphan gh-pages
-                  rm -rf *
-                  echo "Initial gh-pages branch" > index.html
-                  git add index.html
-                  git commit -m "Create gh-pages branch"
-                  git push origin gh-pages
-                fi
-
-                cd ..
-
-                if [ -d "gh-pages" ]; then
-                  rm -rf gh-pages
-                fi
-
-                git clone --branch gh-pages https://github.com/rossmamoun/ceri-m1-techniques-de-test.git gh-pages
-                cd gh-pages
-                rm -rf *
-                cp -r ../javadoc-build/* .
-                git add .
-                git commit -m "Update Javadoc"
-                git push origin gh-pages
+            if ! git ls-remote --exit-code origin gh-pages; then
+              git checkout --orphan gh-pages
+              rm -rf *
+              echo "Initial gh-pages branch" > index.html
+              git add index.html
+              git commit -m "Create gh-pages branch"
+              it push origin gh-pages
+            fi
+            cd ..
+              if [ -d "gh-pages" ]; then
+                rm -rf gh-pages
+              fi
+              git clone --branch gh-pages https://github.com/rossmamoun/ceri-m1-techniques-de-test.git gh-pages
+              cd gh-pages
+              rm -rf *
+              cp -r ../javadoc-build/* .
+              git add .
+              git commit -m "Update Javadoc"
+              git push origin gh-pages
 
 workflows:
   sample:
