@@ -5,6 +5,9 @@ orbs:
 
 jobs:
   build-and-test:
+    filters:
+      branches:
+        ignore: gh-pages
     docker:
       - image: cimg/openjdk:11.0  # Java environment
     steps:
@@ -22,6 +25,9 @@ jobs:
           file: target/site/jacoco/jacoco.xml  # This is where JaCoCo stores the coverage report
 
   checkstyle:
+    filters:
+      branches:
+        ignore: gh-pages
     docker:
       - image: cimg/openjdk:11.0  # Java environment
     steps:
@@ -49,6 +55,9 @@ jobs:
           path: checkstyle-badge.svg  # Save the badge as an artifact
 
   deploy-javadoc:
+    filters:
+      branches:
+        ignore: gh-pages
     docker:
       - image: cimg/openjdk:11.0
     steps:
