@@ -47,6 +47,17 @@ jobs:
             fi
       - store_artifacts:
           path: checkstyle-badge.svg  # Save the badge as an artifact
+      - run:
+          name: Update Checkstyle Badge on gh-pages
+          command: |
+            git config --global user.email "rossmamoun8@gmail.com"
+            git config --global user.name "rossmamoun"
+            git clone --branch gh-pages https://github.com/rossmamoun/ceri-m1-techniques-de-test.git ghpages
+            cd ghpages
+            cp ../checkstyle-badge.svg .
+            git add checkstyle-badge.svg
+            git commit -m "Update Checkstyle Badge"
+            git push origin gh-pages
 
   deploy-javadoc:
     docker:
