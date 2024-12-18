@@ -88,7 +88,7 @@ jobs:
               echo "Initial gh-pages branch" > index.html
               git add index.html
               git commit -m "Create gh-pages branch"
-              it push origin gh-pages
+              git push origin gh-pages
             fi
             cd ..
               if [ -d "gh-pages" ]; then
